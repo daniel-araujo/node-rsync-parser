@@ -1,0 +1,19 @@
+{
+  "name": "rsync-parser",
+  "version": "1.0.0",
+  "description": "Parses rsync output generated with the `--itemize-changes` option. This allows you to programmatically identify files that got created, updated and deleted.",
+  "main": "src/index.js",
+  "files": [
+    "src",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "test": "mocha"
+  },
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "mocha": "^7.1.2"
+  }
+}
