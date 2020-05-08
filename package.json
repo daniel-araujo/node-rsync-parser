@@ -11,7 +11,14 @@
   "scripts": {
     "test": "mocha"
   },
-  "author": "",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/daniel-araujo/rsync-parser.git"
+  },
+  "author": {
+    "name": "Daniel Araujo",
+    "email": "contact@daniel-araujo.pt"
+  },
   "license": "MIT",
   "devDependencies": {
     "mocha": "^7.1.2"
