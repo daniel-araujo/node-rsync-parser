@@ -460,6 +460,17 @@ describe('RsyncItemizeChangesParser', () => {
       assert.strictEqual(e.timestamp, true);
     });
 
+    it('sets timestamp to true when transfer time flag T is reported', async () => {
+      let output = `>fc.T...... rsync-parser/LICENSE
+`;
+      let parser = new RsyncItemizeChangesParser(output);
+
+      let [e] = await once(parser, 'update');
+
+      assert.strictEqual(e.path, 'rsync-parser/LICENSE');
+      assert.strictEqual(e.timestamp, true);
+    });
+
     it('sets timestamp to false if timestamp is not reported in update', async () => {
       let output = `>fc........ rsync-parser/LICENSE
 `;

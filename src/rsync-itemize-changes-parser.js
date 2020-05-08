@@ -127,7 +127,7 @@ exports.RsyncItemizeChangesParser = class RsyncItemizeChangesParser {
             received: Y === RSYNC_TYPE_RECEIVED,
             checksum: c === 'c',
             size: s === 's',
-            timestamp: t === 't',
+            timestamp: t === 't' || t === 'T',
             permissions: p === 'p',
             owner: o === 'o',
             group: g === 'g',
