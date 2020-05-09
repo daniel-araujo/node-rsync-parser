@@ -55,6 +55,7 @@ Updated file package.json
 Deleted package-lock.json
 Created directory src/
 Created file src/index.js
+Finished
 `;
 
     assert.strictEqual(output, expected);

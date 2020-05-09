@@ -28,4 +28,8 @@ parser.on('update', (e) => {
 parser.on('delete', (e) => {
   console.log(`Deleted ${e.path}`);
 });
+
+parser.on('end', (e) => {
+  console.log(`Finished`);
+});
 ```
