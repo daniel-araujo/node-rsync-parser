@@ -1,4 +1,5 @@
 const assert = require('assert');
+const sinon = require('sinon');
 const { once } = require('events');
 const { RsyncItemizeChangesParser } = require('../src/rsync-itemize-changes-parser');
 const { Readable } = require('stream');
@@ -574,12 +575,35 @@ describe('RsyncItemizeChangesParser', () => {
   describe('delete', () => {
     it('emits delete file', async () => {
       let output = `*deleting   rsync-parser/LICENSE
-  `;
+`;
       let parser = new RsyncItemizeChangesParser(output);
 
       let [e] = await once(parser, 'delete');
 
       assert.strictEqual(e.path, 'rsync-parser/LICENSE');
+    });
+  });
+
+  describe('end', () => {
+    it('emits end when no more input is available', async () => {
+      let output = `*deleting   rsync-parser/LICENSE
+cd+++++++++ rsync-parser/LICENSE
+`;
+      let parser = new RsyncItemizeChangesParser(output);
+
+      let deleteCall = sinon.spy();
+      let createCall = sinon.spy();
+      let endCall = sinon.spy();
+
+      parser.on('delete', deleteCall);
+      parser.on('create', createCall);
+      parser.on('end', endCall);
+
+      await once(parser, 'end');
+
+      assert(deleteCall.calledBefore(createCall));
+      assert(createCall.calledBefore(endCall));
+      assert(endCall.called);
     });
   });
 })

@@ -67,6 +67,11 @@ exports.RsyncItemizeChangesParser = class RsyncItemizeChangesParser {
       input: typeof stdout !== 'string' ? stdout : Readable.from(stdout),
     });
 
+    rl.on('close', () => {
+      // The end.
+      this[EVENTS].emit('end', {});
+    });
+
     rl.on('line', (line) => {
       // The general format is like the string YXcstpoguax
 
