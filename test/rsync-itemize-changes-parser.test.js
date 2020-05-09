@@ -606,6 +606,25 @@ describe('RsyncItemizeChangesParser', () => {
     });
   });
 
+  describe('cannotDelete', () => {
+    it('emits cannotDelete when failing to delete non empty directory', async () => {
+      // This can happen when the delete option is used and rsync is unable to
+      // delete the contents inside a directory. Rsync writes to stderr about
+      // being unable to delete the files but it writes to stdout that it cannot
+      // delete the directory for not being empty.
+      // We only parse content from stdout.
+
+      let output = `cannot delete non-empty directory: rsync-parser/LICENSE
+`;
+      let parser = new RsyncItemizeChangesParser(output);
+
+      let [e] = await once(parser, 'cannotDelete');
+
+      assert.strictEqual(e.path, 'rsync-parser/LICENSE');
+      assert.strictEqual(e.type, 'directory');
+    });
+  });
+
   describe('end', () => {
     it('emits end when no more input is available', async () => {
       let output = `*deleting   rsync-parser/LICENSE

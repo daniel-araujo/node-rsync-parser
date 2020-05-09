@@ -73,12 +73,23 @@ exports.RsyncItemizeChangesParser = class RsyncItemizeChangesParser {
     });
 
     rl.on('line', (line) => {
-      // The general format is like the string YXcstpoguax
+      // The general format is like the string YXcstpoguax although some strings do not comfort
 
       // Y is replaced by the type of update being done.
       let Y = line[0];
 
-      if (Y == RSYNC_TYPE_SENT || Y === RSYNC_TYPE_RECEIVED || Y === RSYNC_TYPE_CHANGED) {
+      if (line.startsWith('cannot delete non-empty directory:')) {
+        // This does not follow the general format but it shows up in the
+        // output.
+
+        // Path shows up after the message.
+        let path = line.substring(35);
+
+        this[EVENTS].emit('cannotDelete', {
+          path: path,
+          type: 'directory',
+        });
+      } else if (Y == RSYNC_TYPE_SENT || Y === RSYNC_TYPE_RECEIVED || Y === RSYNC_TYPE_CHANGED) {
         // File type.
         let X = line[1];
 
