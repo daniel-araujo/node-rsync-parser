@@ -570,6 +570,28 @@ describe('RsyncItemizeChangesParser', () => {
       assert.strictEqual(e.path, 'rsync-parser/LICENSE');
       assert.strictEqual(e.acl, false);
     });
+
+    it('sets xattr to true if extended attributes were changed in update', async () => {
+      let output = `>f..t.....x rsync-parser/LICENSE
+`;
+      let parser = new RsyncItemizeChangesParser(output);
+
+      let [e] = await once(parser, 'update');
+
+      assert.strictEqual(e.path, 'rsync-parser/LICENSE');
+      assert.strictEqual(e.xattr, true);
+    });
+
+    it('sets xattr to false if extended attributes were not changed in update', async () => {
+      let output = `>f..t...... rsync-parser/LICENSE
+`;
+      let parser = new RsyncItemizeChangesParser(output);
+
+      let [e] = await once(parser, 'update');
+
+      assert.strictEqual(e.path, 'rsync-parser/LICENSE');
+      assert.strictEqual(e.xattr, false);
+    });
   });
 
   describe('delete', () => {

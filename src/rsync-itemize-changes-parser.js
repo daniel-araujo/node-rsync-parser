@@ -127,6 +127,9 @@ exports.RsyncItemizeChangesParser = class RsyncItemizeChangesParser {
           // ACL change.
           let a = line[9];
 
+          // Extended attributes changed.
+          let x = line[10];
+
           this[EVENTS].emit('update', {
             sent: Y == RSYNC_TYPE_SENT,
             received: Y === RSYNC_TYPE_RECEIVED,
@@ -137,6 +140,7 @@ exports.RsyncItemizeChangesParser = class RsyncItemizeChangesParser {
             owner: o === 'o',
             group: g === 'g',
             acl: a === 'a',
+            xattr: x === 'x',
             path: path,
             type: fileType,
           });
