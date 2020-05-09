@@ -22,9 +22,8 @@
   "license": "MIT",
   "devDependencies": {
     "gfm-code-blocks": "^1.0.0",
-    "mocha": "^7.1.2"
-  },
-  "dependencies": {
+    "mocha": "^7.1.2",
     "sinon": "^9.0.2"
-  }
+  },
+  "dependencies": {}
 }
