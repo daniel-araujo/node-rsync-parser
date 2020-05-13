@@ -184,6 +184,10 @@ exports.RsyncItemizeChangesParser = class RsyncItemizeChangesParser {
     this[EVENTS].off(type, cb);
   }
 
+  addListener(type, cb) {
+    this[EVENTS].on(type, cb);
+  }
+
   removeListener(type, cb) {
     this[EVENTS].off(type, cb);
   }
