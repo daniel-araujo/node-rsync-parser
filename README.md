@@ -259,7 +259,7 @@ When parsing ends. The event object will be empty.
 
 ## Contributing
 
-The easiest way to contribute is by starring this project on GitHub:
+The easiest way to contribute is by starring this project on GitHub!
 
 https://github.com/daniel-araujo/node-rsync-parser
 
