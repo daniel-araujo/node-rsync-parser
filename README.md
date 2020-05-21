@@ -194,7 +194,7 @@ When rsync creates a file. The event object contains the following properties:
 
 #### `update`
 
-When rsync deletes a file. The event object contains the following properties:
+When rsync updates a file. The event object contains the following properties:
 
 ```js
 {
