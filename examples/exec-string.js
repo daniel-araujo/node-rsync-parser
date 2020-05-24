@@ -16,11 +16,21 @@ async function main() {
 
     let parser = new RsyncItemizeChangesParser(stdout);
 
-    parser.on('create', (e) => {
-      console.log(`Created ${e.type} ${e.path}`);
-    });
-
-    await once(parser, 'end');
+    for await (const token of parser) {
+      switch (token.type) {
+      case 'create':
+        console.log(`Created ${token.path}`);
+        break;
+    
+      case 'update':
+        console.log(`Updated ${token.path}`);
+        break;
+    
+      case 'delete':
+        console.log(`Deleted ${token.path}`);
+        break;
+      }
+    }
   } finally {
     fs.unlinkSync('source/file1');
     fs.unlinkSync('source/file2');

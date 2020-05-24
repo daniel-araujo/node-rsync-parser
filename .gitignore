@@ -1,1 +1,6 @@
 /node_modules
+/deno-rsync-parser
+/dist
+/src/index.ts
+/src/rsync-itemize-changes-parser.ts
+/src/rsync-itemize-changes-parser.test.ts

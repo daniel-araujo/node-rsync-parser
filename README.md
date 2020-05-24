@@ -17,21 +17,28 @@ cd+++++++++ src/
 >f+++++++++ src/index.js
 `);
 
-parser.on('create', (e) => {
-  console.log(`Created ${e.type} ${e.path}`);
-});
+// Reads a single token.
+let token = await parser.read();
+if (token) {
+  console.log(`A token of type ${token.type}.`);
+}
 
-parser.on('update', (e) => {
-  console.log(`Updated ${e.type} ${e.path}`);
-});
+// Iterates over every token.
+for await (const token of parser) {
+  switch (token.type) {
+  case 'create':
+    console.log(`Created ${token.path}`);
+    break;
 
-parser.on('delete', (e) => {
-  console.log(`Deleted ${e.path}`);
-});
+  case 'update':
+    console.log(`Updated ${token.path}`);
+    break;
 
-parser.on('end', (e) => {
-  console.log(`Finished`);
-});
+  case 'delete':
+    console.log(`Deleted ${token.path}`);
+    break;
+  }
+}
 ```
 
 More examples can be found in the `examples` directory.
@@ -73,188 +80,16 @@ let rsync = spawn('rsync', ['--itemize-changes', '--archive', 'source', 'destina
 let parser = new RsyncItemizeChangesParser(rsync.stdout);
 ```
 
-You can then register event handlers according to your needs.
+You can then call `read` to get tokens. It will return null when no more tokens
+are available.
 
 ```js
-parser.on('create', (e) => {
-  console.log(`Created ${e.type} ${e.path}`);
-});
+let token;
 
-parser.on('update', (e) => {
-  console.log(`Updated ${e.type} ${e.path}`);
-});
-
-parser.on('delete', (e) => {
-  console.log(`Deleted ${e.path}`);
-});
-
-parser.on('end', (e) => {
-  console.log(`Finished`);
-});
-```
-
-
-## Documentation
-
-### Methods
-
-#### `on(type, cb)`
-
-Registers an event handler.
-
-- `type` must be a string. See the [Events](#events)
-section for available types.
-- `cb` must be a function.
-
-```js
-let parser = new RsyncItemizeChangesParser(rsync.stdout);
-
-parser.on('create', (e) => {
-  console.log(`Created ${e.type} ${e.path}`);
-});
-```
-
-
-#### `off(type, cb)`
-
-Removes an event handler or removes all event handlers for the given type.
-
-- `type` must be a string that identifies the type of event.
-- `cb` is the function that was registered with the `on` method. If omitted, all
-  event handlers for the given type are deregistered.
-
-```js
-let parser = new RsyncItemizeChangesParser(rsync.stdout);
-
-function warn() {
-  console.warn('rsync has started deleting files.');
-
-  parser.off('delete', warn);
-}
-
-parser.on('delete', warn);
-```
-
-
-#### `once(type, cb)`
-
-Like `on` but the event handler is automatically deregistered after the first
-call.
-
-```js
-let parser = new RsyncItemizeChangesParser(rsync.stdout);
-
-parser.once('delete', () => {
-  // Will only print once.
-  console.warn('rsync has started deleting files.');
-});
-```
-
-
-#### `addListener(type, cb)`
-
-Alias for `on`.
-
-
-#### `removeListener(type, cb)`
-
-Alias for `off`. Utilities such as `events.once` only work if this method is present.
-
-```js
-const { once } = require('events');
-
-let parser = new RsyncItemizeChangesParser(rsync.stdout);
-
-// Wait until entire output has been parsed.
-await once(parser, 'end');
-```
-
-
-### Events
-
-#### `create`
-
-When rsync creates a file. The event object contains the following properties:
-
-```js
-{
-  // Whether file was created locally. (not sent over the network)
-  "local": boolean,
-  // Whether file was transferred to the remote host.
-  "sent": boolean,
-  // Whether file was transferred to the local host.
-  "received": boolean,
-  // Path to file.
-  "path": string,
-  // File type. Can be 'file', 'directory', 'symlink', 'device' and 'special'.
-  "type": string,
+while (token = await parser.read()) { 
+  console.log(token.type);
 }
 ```
-
-
-#### `update`
-
-When rsync updates a file. The event object contains the following properties:
-
-```js
-{
-  // Whether file was transferred to the remote host.
-  "sent": boolean,
-  // Whether file was transferred to the local host.
-  "received": boolean,
-  // Whether contents differed.
-  "checksum": boolean,
-  // Whether size was different.
-  "size": boolean,
-  // Whether timestamp was different.
-  "timestamp" boolean,
-  // Whether permissions were different.
-  "permissions" boolean,
-  // Whether owner changed.
-  "owner" boolean,
-  // Whether group changed.
-  "group" boolean,
-  // Whether ACL information changed.
-  "acl" boolean,
-  // Whether extended attributes changed.
-  "xattr" boolean,
-  // Path to file.
-  "path": string,
-  // File type. Can be 'file', 'directory', 'symlink', 'device' and 'special'.
-  "type": string,
-}
-```
-
-
-#### `delete`
-
-When rsync deletes a file. The event object contains the following properties:
-
-```js
-{
-  // Path to file.
-  "path": string,
-}
-```
-
-
-### `cannotDelete`
-
-When rsync fails to delete a file. The event object contains the following properties:
-
-```js
-{
-  // Path to file.
-  "path": string,
-  // File type. Can be 'file', 'directory', 'symlink', 'device' and 'special'.
-  "type": string,
-}
-```
-
-
-### `end`
-
-When parsing ends. The event object will be empty.
 
 
 ## Contributing
