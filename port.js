@@ -1,9 +1,8 @@
 // This package was originally written for Node.js in JavaScript and was then
 // ported to Deno in TypeScript. The Deno version turned out to be more pleasant
 // to write for, so now the Node.js version has become a port of the source code
-// of the Deno version. This script takes fetches the source code and applies
-// the necessary changes to make it work on Node.js. Unit tests are ported as
-// well.
+// of the Deno version. This script fetches the source code and applies the
+// necessary changes to make it work on Node.js. Unit tests are ported as well.
 
 const fs = require('fs');
 const { spawn } = require('child_process');
