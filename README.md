@@ -1,7 +1,8 @@
 # rsync-parser
 
-Parses rsync output generated with the `--itemize-changes` option. This allows
-you to programmatically identify files that got created, updated and deleted.
+Parses the output of rsync when called with the `--itemize-changes` option. This
+allows you to programmatically identify files that got created, updated and
+deleted. Output can be in the form of strings and streams.
 
 
 ## Example
