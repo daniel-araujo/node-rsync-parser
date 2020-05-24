@@ -102,3 +102,9 @@ https://github.com/daniel-araujo/node-rsync-parser
 If you've found a bug, would like to suggest a feature or need help, feel free to create an issue on GitHub:
 
 https://github.com/daniel-araujo/node-rsync-parser/issues
+
+
+## See also
+
+Deno version of this library:
+https://deno.land/x/rsync_parser
