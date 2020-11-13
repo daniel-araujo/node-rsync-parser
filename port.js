@@ -9,7 +9,7 @@ const { spawn } = require('child_process');
 const replaceString = require('replace-string');
 
 // Which version to patch.
-DENO_RSYNC_PARSER_VERSION = 'v2.1.0';
+DENO_RSYNC_PARSER_VERSION = 'v2.2.1';
 
 // Runs a shell command and pipes output to stdout.
 async function shell(command) {
@@ -43,12 +43,12 @@ let pieces = [
 
     code = replaceString(
       code,
-      'import { StringReader } from "https://deno.land/std@v0.51.0/io/readers.ts"',
+      'import { StringReader } from "https://deno.land/std@0.77.0/io/readers.ts"',
       'import { Readable } from "stream";');
 
     code = replaceString(
       code,
-      'from "https://deno.land/std@v0.51.0/io/bufio.ts"',
+      'from "https://deno.land/std@0.77.0/io/bufio.ts"',
       'from "./port/read-lines"');
 
     code = replaceString(
@@ -84,12 +84,12 @@ let pieces = [
 
     code = replaceString(
       code,
-      'from "https://deno.land/std/testing/asserts.ts";',
+      'from "https://deno.land/std@0.77.0/testing/asserts.ts";',
       'from "./port/assert";');
 
     code = replaceString(
       code,
-      'import { StringReader } from "https://deno.land/std@v0.51.0/io/readers.ts";',
+      'import { StringReader } from "https://deno.land/std@0.77.0/io/readers.ts";',
       'import { Readable } from "stream";');
 
     code = replaceString(code, 'Deno.test(', 'test(');

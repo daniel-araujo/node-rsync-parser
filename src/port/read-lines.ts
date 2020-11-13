@@ -1,5 +1,5 @@
 // This exports a function that emulates the readLines function from
-// https://deno.land/std@v0.51.0/io/bufio.ts
+// https://deno.land/std@0.77.0/io/bufio.ts
 import stream from "stream";
 import readline from "readline";
 
