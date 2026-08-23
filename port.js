@@ -9,7 +9,7 @@ const { spawn } = require('child_process');
 const replaceString = require('replace-string');
 
 // Which version to patch.
-DENO_RSYNC_PARSER_VERSION = 'v2.2.1';
+DENO_RSYNC_PARSER_VERSION = 'v2.3.0';
 
 // Runs a shell command and pipes output to stdout.
 async function shell(command) {
